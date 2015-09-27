@@ -5,6 +5,13 @@ import os
 rooturl = "http://mp3tales.info/tales/"
 first = 3
 last = 4
+fetched_path = "../fetched"
+
+# def formattedpath(divider):
+#     return size + divider + background + divider + textcolor
+
+if not os.path.exists(fetched_path):
+    os.makedirs(fetched_path)
 
 
 def encoder(cp1251_file, utf8_file):
@@ -27,17 +34,17 @@ def crawler(label):
     print url, ">", filename,
     return filename, out_file
 
+
 for label in xrange(first, last+1):
     url = "%s?id=%s" %(rooturl, str(label))
-    filename = str(label) + ".txt"
-    out_file = str(label) + "_u.txt"
+
+    
+    filename = ("%s/%s.txt") %(fetched_path, str(label))
+    out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
     print url, ">", filename,
 
-
     fetcher(url, filename)
-
     encoder(filename, out_file)
 
     # output=open(filename, 'rb')
     # print output.read()
-
