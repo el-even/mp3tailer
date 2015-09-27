@@ -1,18 +1,57 @@
 import urllib
 import os
+import sqlite3
+
+
 #import re
 
 rooturl = "http://mp3tales.info/tales/"
-first = 3
-last = 4
+database = "../tales.db"
+first = 1
+last = 2
 fetched_path = "../fetched"
 
-# def formattedpath(divider):
-#     return size + divider + background + divider + textcolor
 
 if not os.path.exists(fetched_path):
     os.makedirs(fetched_path)
 
+class dbTools:
+    def sql(self, query):
+        query = query
+        cur.execute(query)
+        con.commit()
+
+    def db_init(self):
+        con = sqlite3.connect(database)
+        cur = con.cursor()
+
+        query = "CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
+            isFetched BOOLEAN,\
+            isDownloaded BOOLEAN,\
+            isTagged BOOLEAN)"
+        cur.execute(query)
+        con.commit()
+
+        query = "CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
+            title TEXT,\
+            author TEXT,\
+            year INTEGER,\
+            description TEXT)"
+        cur.execute(query)
+        con.commit
+
+        query = "CREATE TABLE IF NOT EXISTS remote_files (id INTEGER PRIMARY KEY,\
+            mp3URL TEXT,\
+            coverURL TEXT)"
+        cur.execute(query)
+        con.commit
+
+        query = "CREATE TABLE IF NOT EXISTS TEST (id INTEGER PRIMARY KEY,\
+            mp3URL TEXT,\
+            coverURL TEXT)"
+        sql(query)
+
+        con.close()
 
 def encoder(cp1251_file, utf8_file):
     text_in_cp1251 = open(cp1251_file, 'r').read()
@@ -35,16 +74,20 @@ def crawler(label):
     return filename, out_file
 
 
-for label in xrange(first, last+1):
-    url = "%s?id=%s" %(rooturl, str(label))
+def body():
+    for label in xrange(first, last+1):
+        url = "%s?id=%s" %(rooturl, str(label))
 
-    
-    filename = ("%s/%s.txt") %(fetched_path, str(label))
-    out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
-    print url, ">", filename,
+        
+        filename = ("%s/%s.txt") %(fetched_path, str(label))
+        out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
+        print url, ">", filename,
 
-    fetcher(url, filename)
-    encoder(filename, out_file)
+        fetcher(url, filename)
+        encoder(filename, out_file)
 
-    # output=open(filename, 'rb')
-    # print output.read()
+        # output=open(filename, 'rb')
+        # print output.read()
+
+c = dbTools()
+c.db_init()
