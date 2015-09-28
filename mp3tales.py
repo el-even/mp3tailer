@@ -11,47 +11,42 @@ first = 1
 last = 2
 fetched_path = "../fetched"
 
+con = sqlite3.connect(database)
+cur = con.cursor()
+
 
 if not os.path.exists(fetched_path):
     os.makedirs(fetched_path)
 
-class dbTools:
-    def sql(self, query):
-        query = query
-        cur.execute(query)
-        con.commit()
+def sql(query):
+    cur.execute(query)
+    con.commit()
 
-    def db_init(self):
-        con = sqlite3.connect(database)
-        cur = con.cursor()
+def db_init():
+    # con = sqlite3.connect(database)
+    # cur = con.cursor()
 
-        query = "CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
-            isFetched BOOLEAN,\
-            isDownloaded BOOLEAN,\
-            isTagged BOOLEAN)"
-        cur.execute(query)
-        con.commit()
+    sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
+        isFetched BOOLEAN,\
+        isDownloaded BOOLEAN,\
+        isTagged BOOLEAN)")
+    # cur.execute(query)
+    # con.commit()
 
-        query = "CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
-            title TEXT,\
-            author TEXT,\
-            year INTEGER,\
-            description TEXT)"
-        cur.execute(query)
-        con.commit
+    sql("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
+        title TEXT,\
+        author TEXT,\
+        year INTEGER,\
+        description TEXT)")
+    # cur.execute(query)
+    # con.commit
 
-        query = "CREATE TABLE IF NOT EXISTS remote_files (id INTEGER PRIMARY KEY,\
-            mp3URL TEXT,\
-            coverURL TEXT)"
-        cur.execute(query)
-        con.commit
+    sql("CREATE TABLE IF NOT EXISTS remote_files (id INTEGER PRIMARY KEY,\
+        mp3URL TEXT,\
+        coverURL TEXT)")
+    # cur.execute(query)
+    # con.commit
 
-        query = "CREATE TABLE IF NOT EXISTS TEST (id INTEGER PRIMARY KEY,\
-            mp3URL TEXT,\
-            coverURL TEXT)"
-        sql(query)
-
-        con.close()
 
 def encoder(cp1251_file, utf8_file):
     text_in_cp1251 = open(cp1251_file, 'r').read()
@@ -89,5 +84,6 @@ def body():
         # output=open(filename, 'rb')
         # print output.read()
 
-c = dbTools()
-c.db_init()
+db_init()
+
+con.close()
