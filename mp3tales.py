@@ -25,9 +25,6 @@ def sql(query):
 
 
 def db_init():
-    # con = sqlite3.connect(database)
-    # cur = con.cursor()
-
     sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
         isFetched BOOLEAN,\
         isDownloaded BOOLEAN,\
