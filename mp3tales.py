@@ -1,6 +1,8 @@
 import urllib
+import urllib2
 import os
 #import re
+
 
 rooturl = "http://mp3tales.info/tales/"
 first = 3
@@ -48,3 +50,16 @@ for label in xrange(first, last+1):
 
     # output=open(filename, 'rb')
     # print output.read()
+
+
+def download(url):
+    remote_file = urllib2.urlopen(url)
+    file_name = url.split('/')[-1]
+    local_file = open(file_name, 'wb')
+    local_file.write(remote_file.read())
+    local_file.close()
+
+
+
+download("https://www.google.ru/logos/doodles/2015/evidence-of-water-found-on-mars-5652760466817024.2-hp.gif")
+
