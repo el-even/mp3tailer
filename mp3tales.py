@@ -37,19 +37,20 @@ def crawler(label):
     return filename, out_file
 
 
-for label in xrange(first, last+1):
-    url = "%s?id=%s" %(rooturl, str(label))
+def body():
+    for label in xrange(first, last+1):
+        url = "%s?id=%s" %(rooturl, str(label))
 
-    
-    filename = ("%s/%s.txt") %(fetched_path, str(label))
-    out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
-    print url, ">", filename,
+        
+        filename = ("%s/%s.txt") %(fetched_path, str(label))
+        out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
+        print url, ">", filename,
 
-    fetcher(url, filename)
-    encoder(filename, out_file)
+        fetcher(url, filename)
+        encoder(filename, out_file)
 
-    # output=open(filename, 'rb')
-    # print output.read()
+        # output=open(filename, 'rb')
+        # print output.read()
 
 
 def download(url):
