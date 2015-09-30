@@ -7,7 +7,8 @@ import os
 rooturl = "http://mp3tales.info/tales/"
 first = 3
 last = 4
-fetched_path = "../fetched"
+fetched_path = "../fetched/"
+downloads_path = "../files/"
 
 # def formattedpath(divider):
 #     return size + divider + background + divider + textcolor
@@ -42,8 +43,8 @@ def body():
         url = "%s?id=%s" %(rooturl, str(label))
 
         
-        filename = ("%s/%s.txt") %(fetched_path, str(label))
-        out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
+        filename = ("%s%s.txt") %(fetched_path, str(label))
+        out_file = ("%s%s_u.txt") %(fetched_path, str(label))
         print url, ">", filename,
 
         fetcher(url, filename)
@@ -55,12 +56,38 @@ def body():
 
 def download(url):
     remote_file = urllib2.urlopen(url)
-    file_name = url.split('/')[-1]
+    print remote_file.info()
+    file_name = downloads_path + url.split('/')[-1]
+    # local_file = open(file_name, 'wb')
+    # local_file.write(remote_file.read())
+    # local_file.close()
+
+
+    
+    # remote_file = urllib2.urlopen(url)
     local_file = open(file_name, 'wb')
-    local_file.write(remote_file.read())
+    meta = remote_file.info()
+    file_size = int(meta.getheaders("Content-Length")[0])
+    print "Downloading %s" % (file_name.split('/')[-1])
+
+    print meta.getheaders("Content-Disposition")[0]
+
+    # file_size_dl = 0
+    # block_sz = 8*1024
+    # while True:
+    #     buffer = remote_file.read(block_sz)
+    #     if not buffer:
+    #         break
+
+    #     file_size_dl += len(buffer)
+    #     local_file.write(buffer)
+    #     status = r"%d of %d KB  [%3.2f%%]" % (file_size_dl/1024, file_size/1024, file_size_dl * 100. / file_size)
+    #     status = status + chr(8)*(len(status)+1)
+    #     print status,
+
     local_file.close()
 
 
 
-download("https://www.google.ru/logos/doodles/2015/evidence-of-water-found-on-mars-5652760466817024.2-hp.gif")
+download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
 
