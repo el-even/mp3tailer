@@ -1,7 +1,7 @@
 import urllib
 import urllib2
 import os
-#import re
+import re
 
 
 rooturl = "http://mp3tales.info/tales/"
@@ -15,6 +15,10 @@ downloads_path = "../files/"
 
 if not os.path.exists(fetched_path):
     os.makedirs(fetched_path)
+
+if not os.path.exists(downloads_path):
+    os.makedirs(downloads_path)
+
 
 
 def encoder(cp1251_file, utf8_file):
@@ -54,23 +58,38 @@ def body():
         # print output.read()
 
 
+def getName(remote_file):
+    try:
+        result = re.search('filename="(.*)"', remote_file.info().getheaders("Content-Disposition")[0]).group(1)
+    except:
+        result = ""
+    return result
+    
+
+
 def download(url):
     remote_file = urllib2.urlopen(url)
-    print remote_file.info()
-    file_name = downloads_path + url.split('/')[-1]
+    # print remote_file.info()
+    # print remote_file.info()
+    if getName(remote_file) != "":
+        file_name = getName(remote_file)
+    else:
+        file_name = url.split('/')[-1]
+    print file_name
     # local_file = open(file_name, 'wb')
     # local_file.write(remote_file.read())
     # local_file.close()
 
-
+    
     
     # remote_file = urllib2.urlopen(url)
     local_file = open(file_name, 'wb')
     meta = remote_file.info()
-    file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading %s" % (file_name.split('/')[-1])
 
-    print meta.getheaders("Content-Disposition")[0]
+    file_size = int(meta.getheaders("Content-Length")[0])
+    #print "Downloading %s" % (file_name.split('/')[-1])
+
+    # print meta.getheaders("Content-Disposition")[0]
 
     # file_size_dl = 0
     # block_sz = 8*1024
@@ -85,9 +104,14 @@ def download(url):
     #     status = status + chr(8)*(len(status)+1)
     #     print status,
 
+    # s = 'attachment; filename="tone24bit.m4a"'
+    # result = re.search('filename="(.*)"', meta.getheaders("Content-Disposition")[0])
+    # print result.group(1)
+
     local_file.close()
 
 
 
 download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+download("http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
 
