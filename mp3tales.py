@@ -52,29 +52,19 @@ def body():
         encoder(filename, out_file)
 
 
-def getName(remote_file):
-    try:
-        result = re.search('filename="(.*)"', remote_file.info().getheaders("Content-Disposition")[0]).group(1)
-    except:
-        result = ""
-    return result
-    
-
 def download(url):
     remote_file = urllib2.urlopen(url)
-    if getName(remote_file) != "":
-        file_name = getName(remote_file)
-    else:
+    meta = remote_file.info()
+
+    try:
+        file_name = re.search('filename="(.*)"', meta.getheaders("Content-Disposition")[0]).group(1)
+    except:
         file_name = url.split('/')[-1]
-    print file_name
 
     local_file = open(downloads_path+file_name, 'wb')
-    meta = remote_file.info()
 
     file_size = int(meta.getheaders("Content-Length")[0])
     print "Downloading %s" % (file_name.split('/')[-1])
-
-    print meta.getheaders("Content-Disposition")[0]
 
     file_size_dl = 0
     block_sz = 8*1024
