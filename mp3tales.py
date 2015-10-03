@@ -1,9 +1,9 @@
 import urllib
 import urllib2
 import os
-# import re
 
 from download import *
+from db import *
 from config import *
 
 
@@ -44,11 +44,10 @@ def body():
         out_file = ("%s%s_u.txt") %(fetched_path, str(label))
         print url, ">", filename,
 
-        fetcher(url, filename)
-        encoder(filename, out_file)
 
-
-download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+# download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
 # download("http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
 
 
+db_init()
+con.close()
