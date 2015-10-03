@@ -1,44 +1,17 @@
 import urllib
+import urllib2
 import os
-import sqlite3
 
-
-#import re
-
-rooturl = "http://mp3tales.info/tales/"
-database = "../tales.db"
-first = 1
-last = 2
-fetched_path = "../fetched"
-
-con = sqlite3.connect(database)
-cur = con.cursor()
+from download import *
+from db import *
+from config import *
 
 
 if not os.path.exists(fetched_path):
     os.makedirs(fetched_path)
 
-
-def sql(query):
-    cur.execute(query)
-    con.commit()
-
-
-def db_init():
-    sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
-        isFetched BOOLEAN,\
-        isDownloaded BOOLEAN,\
-        isTagged BOOLEAN)")
-
-    sql("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
-        title TEXT,\
-        author TEXT,\
-        year INTEGER,\
-        description TEXT)")
-
-    sql("CREATE TABLE IF NOT EXISTS remote_files (id INTEGER PRIMARY KEY,\
-        mp3URL TEXT,\
-        coverURL TEXT)")
+if not os.path.exists(downloads_path):
+    os.makedirs(downloads_path)
 
 
 def encoder(cp1251_file, utf8_file):
@@ -67,16 +40,14 @@ def body():
         url = "%s?id=%s" %(rooturl, str(label))
 
         
-        filename = ("%s/%s.txt") %(fetched_path, str(label))
-        out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
+        filename = ("%s%s.txt") %(fetched_path, str(label))
+        out_file = ("%s%s_u.txt") %(fetched_path, str(label))
         print url, ">", filename,
 
-        fetcher(url, filename)
-        encoder(filename, out_file)
 
-        # output=open(filename, 'rb')
-        # print output.read()
+# download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+# download("http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
+
 
 db_init()
-
 con.close()
