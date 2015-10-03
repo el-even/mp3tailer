@@ -1,17 +1,17 @@
 import urllib
+import urllib2
 import os
-#import re
+# import re
 
-rooturl = "http://mp3tales.info/tales/"
-first = 3
-last = 4
-fetched_path = "../fetched"
+from download import *
+from config import *
 
-# def formattedpath(divider):
-#     return size + divider + background + divider + textcolor
 
 if not os.path.exists(fetched_path):
     os.makedirs(fetched_path)
+
+if not os.path.exists(downloads_path):
+    os.makedirs(downloads_path)
 
 
 def encoder(cp1251_file, utf8_file):
@@ -35,16 +35,20 @@ def crawler(label):
     return filename, out_file
 
 
-for label in xrange(first, last+1):
-    url = "%s?id=%s" %(rooturl, str(label))
+def body():
+    for label in xrange(first, last+1):
+        url = "%s?id=%s" %(rooturl, str(label))
 
-    
-    filename = ("%s/%s.txt") %(fetched_path, str(label))
-    out_file = ("%s/%s_u.txt") %(fetched_path, str(label))
-    print url, ">", filename,
+        
+        filename = ("%s%s.txt") %(fetched_path, str(label))
+        out_file = ("%s%s_u.txt") %(fetched_path, str(label))
+        print url, ">", filename,
 
-    fetcher(url, filename)
-    encoder(filename, out_file)
+        fetcher(url, filename)
+        encoder(filename, out_file)
 
-    # output=open(filename, 'rb')
-    # print output.read()
+
+download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+# download("http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
+
+
