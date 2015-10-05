@@ -1,5 +1,6 @@
 import os
 import urllib
+# TODO: evolve from urllib to urllib2 for consistency
 
 from config import *
 
@@ -18,15 +19,15 @@ def encoder(cp1251_file, utf8_file):
     open(utf8_file, 'wb').write(text_in_utf8)
 
 
-# TODO: decomiss fetcher or add more actions to it
+# TODO: decomiss fetcher or add more actions to it; change urllib to urllib2
 def fetcher(url, filename):
     urllib.urlretrieve(url, filename)
 
 
-def crawler(label):
-    url = "%s?id=%s" %(rooturl, str(label))
-    filename = ("%s%s.txt") %(fetched_path, str(label))
-    out_file = ("%s%s_u.txt") %(fetched_path, str(label))
+def crawler(tale_id):
+    url = "%s?id=%s" %(talesurl, str(tale_id))
+    filename = ("%s%s.txt") %(fetched_path, str(tale_id))
+    out_file = ("%s%s_u.txt") %(fetched_path, str(tale_id))
     fetcher(url, filename)
     encoder(filename, out_file)
     print "%s > %s: %d bytes" %(url, filename, os.path.getsize(filename))
@@ -34,6 +35,6 @@ def crawler(label):
 
 
 def body():
-    for label in xrange(first, last+1):
-        url = "%s?id=%s" %(rooturl, str(label))
-        crawler(label)
+    for tale_id in xrange(first, last+1):
+        url = "%s?id=%s" %(talesurl, str(tale_id))
+        crawler(tale_id)
