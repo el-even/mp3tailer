@@ -34,6 +34,7 @@ def crawler(tale_id):
     return filename, out_file
 
 
+# TODO: move this to mp3tales.py
 def body():
     for tale_id in xrange(first, last+1):
         url = "%s?id=%s" %(talesurl, str(tale_id))

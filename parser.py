@@ -3,10 +3,6 @@ import re
 from config import *
 
 
-filename = fetched_path+"48_u.txt"
-html = open(filename, 'r').read()
-
-
 def strip(text):
     return re.sub("^\s*|\s*$|\s*?<br/>", "", text)
 
@@ -26,4 +22,8 @@ def parser(html):
     print annotation
     print description
 
+
+
+filename = fetched_path+"48_u.txt"
+html = open(filename, 'r').read()
 parser(html)
