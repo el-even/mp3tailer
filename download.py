@@ -2,9 +2,10 @@ import urllib2
 import re
 
 from config import *
+from db import *
 
 
-def download(url):
+def download(id, url):
     remote_file = urllib2.urlopen(url)
     meta = remote_file.info()
 
@@ -36,6 +37,9 @@ def download(url):
 
     local_file.close()
 
-download("http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
-download("http://mp3tales.info/screen/pre/280x280xprikljuchenija_buratino.jpg.pagespeed.ic.ViQl-ABr1T.jpg")
-download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+    # query = ("INSERT OR REPLACE INTO files (id, fileName) VALUES (%s, 'ABC')") %(id)
+    # sql(query)
+
+download(10, "http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
+# download("http://mp3tales.info/screen/pre/280x280xprikljuchenija_buratino.jpg.pagespeed.ic.ViQl-ABr1T.jpg")
+# download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
