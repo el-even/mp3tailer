@@ -3,8 +3,10 @@ talesurl = rooturl + "tales/"
 fetched_path = "../fetched/"
 downloads_path = "../files/"
 database = "../tales.db"
-first = 48
-last = 49
+first_tale = 1
+last_tale = 1000
+max_errors_allowed = 5
+ok_mark = "-- ok"
 
 re_img_url = 'img class="saturate" src="/(.*?)" alt'
 re_mp3_url = '<source src="/(.*)" type="audio/mpeg">'

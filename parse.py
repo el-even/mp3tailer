@@ -8,6 +8,7 @@ def strip(text):
     return re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", text)
 
 def parser(id, html):
+    print "Parsing tale #%s" %id,
     img_url = rooturl + re.search(re_img_url, html).group(1)
     mp3_url = rooturl + re.search(re_mp3_url, html).group(1)
     tale_name = (mp3_url.split('/')[-1]).split('.')[0]
@@ -19,7 +20,9 @@ def parser(id, html):
         %(strip(re.search(re_annotation, html).group(1)),\
             strip(re.search(re_description, html).group(1)))
     description = strip(description)
+    print ok_mark
 
+    print "Updating database",
     query = ("INSERT OR REPLACE INTO files (id, taleName, mp3URL, coverURL)\
         VALUES ('%s', '%s', '%s', '%s')") %(id, tale_name, mp3_url, img_url)
     sql(query)
@@ -31,8 +34,4 @@ def parser(id, html):
     query = ("INSERT OR REPLACE INTO status (id, isParsed)\
         VALUES ('%s', 1)") %id
     sql(query)
-
-
-filename = fetched_path+"3_u.txt"
-html = open(filename, 'r').read()
-parser(3, html)
+    print ok_mark
