@@ -1,14 +1,12 @@
-import os
+# import os
 import urllib2
 
 from config import *
 
-
-if not os.path.exists(fetched_path):
-    os.makedirs(fetched_path)
-
-if not os.path.exists(downloads_path):
-    os.makedirs(downloads_path)
+# left for debug sake
+# TODO: get rid of it on release
+# if not os.path.exists(fetched_path):
+#     os.makedirs(fetched_path)
 
 
 def fetcher(url):

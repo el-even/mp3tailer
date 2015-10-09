@@ -1,11 +1,13 @@
 rooturl = "http://mp3tales.info/"
 talesurl = rooturl + "tales/"
-fetched_path = "../fetched/"
+# fetched_path = "../fetched/"
 downloads_path = "../files/"
 database = "../tales.db"
-first_tale = 1
-last_tale = 1000
+
+first_tale = 49
+last_tale = 52
 max_errors_allowed = 5
+
 ok_mark = "-- ok"
 
 re_img_url = 'img class="saturate" src="/(.*?)" alt'

@@ -1,8 +1,13 @@
-import urllib2
+import os
 import re
+import urllib2
 
 from config import *
 from db import *
+
+
+if not os.path.exists(downloads_path):
+    os.makedirs(downloads_path)
 
 
 def download(id, url):
@@ -40,6 +45,6 @@ def download(id, url):
     # query = ("INSERT OR REPLACE INTO files (id, fileName) VALUES (%s, 'ABC')") %(id)
     # sql(query)
 
-download(10, "http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
+# download(10, "http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
 # download("http://mp3tales.info/screen/pre/280x280xprikljuchenija_buratino.jpg.pagespeed.ic.ViQl-ABr1T.jpg")
 # download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")

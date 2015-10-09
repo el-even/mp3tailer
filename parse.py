@@ -4,21 +4,30 @@ from config import *
 from db import *
 
 
+def retrieve(pattern, string):
+    try:
+        result = re.search(pattern, string).group(1)
+    except:
+        result = ""
+    return result
+
+
 def strip(text):
     return re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", text)
+
 
 def parser(id, html):
     print "Parsing tale #%s" %id,
     img_url = rooturl + re.search(re_img_url, html).group(1)
     mp3_url = rooturl + re.search(re_mp3_url, html).group(1)
     tale_name = (mp3_url.split('/')[-1]).split('.')[0]
-    title = re.search(re_title, html).group(1)
-    year = re.search(re_year, html).group(1)
+    title = retrieve(re_title, html)
+    year = retrieve(re_year, html)
     # not sure if it is a best way to populate description
     # TODO: investigate further
     description = "%s\n\n%s"\
-        %(strip(re.search(re_annotation, html).group(1)),\
-            strip(re.search(re_description, html).group(1)))
+        %(strip(retrieve(re_annotation, html)),\
+            strip(retrieve(re_description, html)))
     description = strip(description)
     print ok_mark
 
