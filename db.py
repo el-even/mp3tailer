@@ -14,16 +14,16 @@ def sql(query):
 
 def db_init():
     sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
-        isFetched BOOLEAN,\
+        isParsed BOOLEAN,\
         isDownloaded BOOLEAN,\
         isTagged BOOLEAN)")
 
     sql("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
         title TEXT,\
-        author TEXT,\
         year INTEGER,\
         description TEXT)")
 
-    sql("CREATE TABLE IF NOT EXISTS remote_files (id INTEGER PRIMARY KEY,\
+    sql("CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY,\
+        taleName TEXT,\
         mp3URL TEXT,\
         coverURL TEXT)")
