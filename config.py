@@ -11,7 +11,7 @@ max_errors_allowed = 50
 ok_mark = "-- ok"
 
 re_img_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
-re_mp3_url = '<source src="/(.*)" type="audio/mpeg">'
+re_mp3_url = '<a.*?href="/(.*?)".*?onclick="return clickaudio\(\)".*?>'
 re_title = '<h1 itemprop="name">(.*?)</h1>'
 re_year = "<meta itemprop='dateCreated' content='(.*?)'>"
 re_annotation = "(?s)<p>.*?<small>(.*?)</small>"
