@@ -7,7 +7,7 @@ from parse import *
 def body():
     errors_counter = 0
     failed_tales = []
-    for id in failed:
+    for id in [293]:
         url = "%s?id=%s" %(talesurl, id)
         try:
             html = fetcher(url)
@@ -21,7 +21,6 @@ def body():
             break
     if errors_counter > 0:
         print "Failed tales: %s" %failed_tales
-
 
 db_init()
 body()

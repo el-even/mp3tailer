@@ -12,8 +12,30 @@ def retrieve(pattern, string):
     return result
 
 
+def typographer2(string, pattern, substitute):
+    result = string.decode("utf-8").replace(pattern, substitute).encode("utf-8")
+    # result = re.sub(pattern, substitute, string)
+    return result
+
+
+def typographer(pattern, substitute, string):
+    string = string.decode("utf-8")
+    result = re.sub(pattern, substitute, string).encode("utf-8")
+    return result
+
+
 def strip(text):
-    return re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", text)
+    result = re.sub("<span.*?>.*?</span>", "", text) # remove surplus spans
+    result = typographer("- ", u"\u2014 ", result) # replace hyphens with emdash
+    result = typographer(" -", u" \u2014", result)
+    result = typographer(" {4,}", "\n", result)
+    result = typographer(" {2,}", " ", result)
+    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result)
+    result = typographer(" (\"|\')", u" \xab", result)
+    result = typographer("(\"|\') ", u"\xbb ", result) # don't like these similar lines
+    result = typographer("(\"|\')\.", u"\xbb.", result)
+    
+    return result
 
 
 def parser(id, html):
@@ -28,6 +50,7 @@ def parser(id, html):
     description = "%s\n\n%s"\
         %(strip(retrieve(re_annotation, html)),\
             strip(retrieve(re_description, html)))
+    # print description
     description = strip(description)
     print ok_mark
 
