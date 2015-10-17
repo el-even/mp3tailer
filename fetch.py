@@ -1,12 +1,7 @@
-# import os
+import os
 import urllib2
 
 from config import *
-
-# left for debug sake
-# TODO: get rid of it on release
-# if not os.path.exists(fetched_path):
-#     os.makedirs(fetched_path)
 
 
 def fetcher(url):
@@ -18,3 +13,12 @@ def fetcher(url):
     html = remote_html.decode('cp1251').encode('utf8')
     print ok_mark
     return html
+
+
+def htmlsave(id, html):
+    # check if fetched files directory exists and create it
+    if not os.path.exists(fetched_path):
+        os.makedirs(fetched_path)
+    filename = ("%s%s.html") %(fetched_path, id)
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write(html)

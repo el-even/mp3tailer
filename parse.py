@@ -12,10 +12,9 @@ def retrieve(pattern, string):
     return result
 
 
-def typographer2(string, pattern, substitute):
-    result = string.decode("utf-8").replace(pattern, substitute).encode("utf-8")
-    # result = re.sub(pattern, substitute, string)
-    return result
+# def typographer2(pattern, substitute, string):
+#     result = string.decode("utf-8").replace(pattern, substitute).encode("utf-8")
+#     return result
 
 
 def typographer(pattern, substitute, string):

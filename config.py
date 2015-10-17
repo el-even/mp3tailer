@@ -4,8 +4,8 @@ fetched_path = "../fetched/"
 downloads_path = "../files/"
 database = "../tales.db"
 
-first_tale = 265
-last_tale = 267
+first_tale = 1
+last_tale = 999
 max_errors_allowed = 50
 
 ok_mark = "-- ok"
