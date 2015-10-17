@@ -21,7 +21,7 @@ def body():
             print "Too many errors, aborting."
             break
     if errors_counter > 0:
-        print "Failed tales: %s" %failed_tales
+        print "\nFailed tales: %s" %failed_tales
 
 db_init()
 body()

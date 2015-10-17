@@ -12,7 +12,7 @@ ok_mark = "-- ok"
 
 re_img_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
 re_mp3_url = '<a.*?href="/(.*?)".*?onclick="return clickaudio\(\)".*?>'
-re_title = '<h1 itemprop="name">(.*?)</h1>'
+re_title = '<h1>(.*?)</h1>'
 re_year = "<meta itemprop='dateCreated' content='(.*?)'>"
 re_annotation = "(?s)<p>.*?<small>(.*?)</small>"
 re_description = '(?s)<p id="description".*?>(.*?)</p>'

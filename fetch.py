@@ -5,7 +5,7 @@ from config import *
 
 
 def fetcher(url):
-    print "Retrieving %s" %url,
+    print "\nRetrieving %s" %url,
     remote_html = urllib2.urlopen(url).read()
     print ok_mark
     print "Decoding %s" %url,
