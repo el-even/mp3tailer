@@ -7,7 +7,7 @@ from parse import *
 def body():
     errors_counter = 0
     failed_tales = []
-    for id in failed:
+    for id in [598]:
         url = "%s?id=%s" %(talesurl, id)
         try:
             html = fetcher(url)

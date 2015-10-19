@@ -29,11 +29,12 @@ def strip(text):
     result = typographer(" -", u" \u2014", result)
     result = typographer(" {4,}", "\n", result)
     result = typographer(" {2,}", " ", result)
-    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result)
     result = typographer(" (\"|\')", u" \xab", result)
     result = typographer("(\"|\') ", u"\xbb ", result) # don't like these similar lines
     result = typographer("(\"|\')\.", u"\xbb.", result)
-    
+    result = typographer("\((\"|\')", u"(\xab", result)
+    result = typographer("(\"|\')\)", u"\xbb)", result)
+    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result)
     return result
 
 
@@ -47,7 +48,7 @@ def parser(id, html):
         description = "%s\n\n%s"\
             %(strip(retrieve(re_annotation, html)),\
                 strip(retrieve(re_description, html)))
-        # print description
+        print description
         description = strip(description)
         img_url = rooturl + re.search(re_img_url, html).group(1)
         mp3_url = rooturl + re.search(re_mp3_url, html).group(1)

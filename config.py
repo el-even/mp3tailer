@@ -18,6 +18,4 @@ re_annotation = "(?s)<p>.*?<small>(.*?)</small>"
 re_description = '(?s)<p id="description".*?>(.*?)</p>'
 
 
-failed = [99, 404, 450, 493, 580, 582, 598,\
-    669, 699, 713, 798,\
-    899, 929]
+failed = [404, 493, 598, 713, 798]
