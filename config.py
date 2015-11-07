@@ -2,7 +2,7 @@ rooturl = "http://mp3tales.info/"
 talesurl = rooturl + "tales/"
 fetched_path = "../fetched/"
 downloads_path = "../files/"
-database = "../tales.db"
+database = "../tales2.db"
 
 first_tale = 1
 last_tale = 999
@@ -12,10 +12,10 @@ ok_mark = "-- ok"
 
 re_img_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
 re_mp3_url = '<a.*?href="/(.*?)".*?onclick="return clickaudio\(\)".*?>'
-re_title = '<h1>(.*?)</h1>'
+re_title = '<h1.*?>(.*?)</h1>'
 re_year = "<meta itemprop='dateCreated' content='(.*?)'>"
 re_annotation = "(?s)<p>.*?<small>(.*?)</small>"
 re_description = '(?s)<p id="description".*?>(.*?)</p>'
 
 
-failed = [404, 493, 598, 713, 798]
+failed = [257, 404, 493, 598, 713, 798]
