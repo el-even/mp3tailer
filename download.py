@@ -37,7 +37,6 @@ def download(id):
             print status,
         local_file.close()
 
-
         if os.path.getsize("%s" %(downloads_path+mp3_name)) == file_size:
             print "\n%s is successfully downloaded" %mp3_name
             query = ("UPDATE status SET isDownloaded=1 WHERE id='%s'") %id
@@ -46,7 +45,6 @@ def download(id):
             print "\nSomething went wrong, downloaded mp3 is corrupted"
             query = ("UPDATE status SET isDownloaded=0 WHERE id='%s'") %id
             sql(query)
-
 
         local_file = open(downloads_path+cover_name, 'wb')
         remote_cover = urllib2.urlopen(cover_url)
@@ -63,10 +61,3 @@ def download(id):
         local_file.close()
     except:
         print "No URL found for tale #%s" %id
-
-
-# download(10, "http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
-# download("http://mp3tales.info/screen/pre/280x280xprikljuchenija_buratino.jpg.pagespeed.ic.ViQl-ABr1T.jpg")
-# download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
-
-download(43)
