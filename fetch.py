@@ -4,15 +4,8 @@ import urllib2
 from config import *
 
 
-if not os.path.exists(fetched_path):
-    os.makedirs(fetched_path)
-
-if not os.path.exists(downloads_path):
-    os.makedirs(downloads_path)
-
-
 def fetcher(url):
-    print "Retrieving %s" %url,
+    print "\nRetrieving %s" %url,
     remote_html = urllib2.urlopen(url).read()
     print ok_mark
     print "Decoding %s" %url,
@@ -20,3 +13,12 @@ def fetcher(url):
     html = remote_html.decode('cp1251').encode('utf8')
     print ok_mark
     return html
+
+
+def htmlsave(id, html):
+    # check if fetched files directory exists and create it
+    if not os.path.exists(fetched_path):
+        os.makedirs(fetched_path)
+    filename = ("%s%s.html") %(fetched_path, id)
+    with open(filename, 'w') as htmlfile:
+        htmlfile.write(html)
