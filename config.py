@@ -2,7 +2,7 @@ rooturl = "http://mp3tales.info/"
 talesurl = rooturl + "tales/"
 fetched_path = "../fetched/"
 downloads_path = "../files/"
-database = "../tales2.db"
+database = "../tales.db"
 
 first_tale = 1
 last_tale = 999
@@ -18,4 +18,4 @@ re_annotation = "(?s)<p>.*?<small>(.*?)</small>"
 re_description = '(?s)<p id="description".*?>(.*?)</p>'
 
 
-failed = [257, 404, 493, 598, 713, 798]
+failed = []

@@ -55,6 +55,8 @@ def parser(id, html):
         tale_name = (mp3_url.split('/')[-1]).split('.')[0]
         print ok_mark
 
+        # NOT SECURE!
+        # TODO: use ? istead of %s
         print "Updating database",
         query = ("INSERT OR REPLACE INTO files (id, taleName, mp3URL, coverURL)\
             VALUES ('%s', '%s', '%s', '%s')") %(id, tale_name, mp3_url, img_url)
@@ -71,3 +73,4 @@ def parser(id, html):
 
     else:
         print "-- Error 404: nothing here, skipping"
+        
