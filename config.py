@@ -8,7 +8,7 @@ first_tale = 1
 last_tale = 999
 max_errors_allowed = 50
 
-ok_mark = "-- ok"
+ok_mark = "-- Done"
 
 re_img_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
 re_mp3_url = '<a.*?href="/(.*?)".*?onclick="return clickaudio\(\)".*?>'
