@@ -12,11 +12,6 @@ def retrieve(pattern, string):
     return result
 
 
-# def typographer2(pattern, substitute, string):
-#     result = string.decode("utf-8").replace(pattern, substitute).encode("utf-8")
-#     return result
-
-
 def typographer(pattern, substitute, string):
     string = string.decode("utf-8")
     result = re.sub(pattern, substitute, string).encode("utf-8")
@@ -26,14 +21,21 @@ def typographer(pattern, substitute, string):
 def strip(text):
     result = re.sub("<span.*?>.*?</span>", "", text) # remove surplus spans
     result = typographer("- ", u"\u2014 ", result) # replace hyphens with emdash
-    result = typographer(" -", u" \u2014", result)
-    result = typographer(" {4,}", "\n", result)
-    result = typographer(" {2,}", " ", result)
-    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result)
-    result = typographer(" (\"|\')", u" \xab", result)
+    result = typographer(" -", u" \u2014", result) # replace hyphens with emdash
+    result = typographer(" {4,}", "\n", result) # replace 4+ spaces with line break
+    result = typographer(" {2,}", " ", result) # replace 2+ spaces with single space
+
+    result = typographer(" (\"|\')", u" \xab", result) # beautify quotes
     result = typographer("(\"|\') ", u"\xbb ", result) # don't like these similar lines
-    result = typographer("(\"|\')\.", u"\xbb.", result)
     
+    result = typographer("(\"|\')\.", u"\xbb.", result)
+    result = typographer("\((\"|\')", u"(\xab", result)
+    result = typographer("(\"|\')\)", u"\xbb)", result)
+    result = typographer("(\"|\')\n", u"\xbb\n", result)  # final quote in line
+    result = typographer("\n(\"|\')", u"\n\xab", result)  # first quote in line
+    
+    result = typographer("\'", "''", result)
+    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result) # remove obsolete spaces and line breaks
     return result
 
 
@@ -47,7 +49,6 @@ def parser(id, html):
         description = "%s\n\n%s"\
             %(strip(retrieve(re_annotation, html)),\
                 strip(retrieve(re_description, html)))
-        # print description
         description = strip(description)
         img_url = rooturl + re.search(re_img_url, html).group(1)
         mp3_url = rooturl + re.search(re_mp3_url, html).group(1)

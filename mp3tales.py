@@ -4,10 +4,10 @@ from fetch import *
 from parse import *
 
 
-def body():
+def body(area):
     errors_counter = 0
     failed_tales = []
-    for id in failed:
+    for id in area:
         url = "%s?id=%s" %(talesurl, id)
         try:
             html = fetcher(url)
@@ -24,4 +24,4 @@ def body():
         print "\nFailed tales: %s" %failed_tales
 
 db_init()
-body()
+body(xrange(first_tale, last_tale))
