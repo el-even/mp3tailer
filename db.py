@@ -12,6 +12,11 @@ def sql(query):
     con.commit()
 
 
+def select(query):
+    cur.execute(query)
+    return cur.fetchone()[0]
+
+
 def db_init():
     sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
         isParsed BOOLEAN,\
