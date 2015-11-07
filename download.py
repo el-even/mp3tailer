@@ -10,41 +10,54 @@ if not os.path.exists(downloads_path):
     os.makedirs(downloads_path)
 
 
-def download(id, url):
-    remote_file = urllib2.urlopen(url)
-    meta = remote_file.info()
-
+def download(id):
     try:
-        file_name = re.search('filename="(.*)"', meta.getheaders("Content-Disposition")[0]).group(1)
+        # TODO: use single request to DB
+        mp3_url = select("SELECT mp3URL FROM files WHERE id=%s" %id)
+        cover_url = select("SELECT coverURL FROM files WHERE id=%s" %id)
+        tale_name = select("SELECT taleName FROM files WHERE id=%s" %id)
+        mp3_name = "%s.mp3" %tale_name
+        cover_name = "%s.jpg" %tale_name
+
+        remote_mp3 = urllib2.urlopen(mp3_url)
+        meta = remote_mp3.info()
+        file_size = int(meta.getheaders("Content-Length")[0])
+        local_file = open(downloads_path+mp3_name, 'wb')
+        print "Downloading tale #%s: %s" %(id, mp3_name)
+        file_size_dl = 0
+        block_size = 8*1024
+        while True:
+            buffer = remote_mp3.read(block_size)
+            if not buffer:
+                break
+            file_size_dl += len(buffer)
+            local_file.write(buffer)
+            status = r"%d of %d KB  [%3.2f%%]" % (file_size_dl/1024, file_size/1024, file_size_dl * 100. / file_size)
+            status = status + chr(8)*(len(status)+1)
+            print status,
+        local_file.close()
+
+        if os.path.getsize("%s" %(downloads_path+mp3_name)) == file_size:
+            print "\n%s is successfully downloaded" %mp3_name
+            query = ("UPDATE status SET isDownloaded=1 WHERE id='%s'") %id
+            sql(query)
+        else:
+            print "\nSomething went wrong, downloaded mp3 is corrupted"
+            query = ("UPDATE status SET isDownloaded=0 WHERE id='%s'") %id
+            sql(query)
+
+        local_file = open(downloads_path+cover_name, 'wb')
+        remote_cover = urllib2.urlopen(cover_url)
+        print "Downloading %s" % cover_name,
+        file_size_dl = 0
+        block_size = 8*1024
+        while True:
+            buffer = remote_cover.read(block_size)
+            if not buffer:
+                break
+            file_size_dl += len(buffer)
+            local_file.write(buffer)
+        print ok_mark
+        local_file.close()
     except:
-        file_name = url.split('/')[-1]
-
-    file_extention= file_name.split('.')[-1]
-    file_name = ("%s.%s") %(file_name.split('.')[-2], file_name.split('.')[-1])
-
-    local_file = open(downloads_path+file_name, 'wb')
-
-    file_size = int(meta.getheaders("Content-Length")[0])
-    print "Downloading %s" % file_name
-
-    # file_size_dl = 0
-    # block_sz = 8*1024
-    # while True:
-    #     buffer = remote_file.read(block_sz)
-    #     if not buffer:
-    #         break
-
-    #     file_size_dl += len(buffer)
-    #     local_file.write(buffer)
-    #     status = r"%d of %d KB  [%3.2f%%]" % (file_size_dl/1024, file_size/1024, file_size_dl * 100. / file_size)
-    #     status = status + chr(8)*(len(status)+1)
-    #     print status,
-
-    local_file.close()
-
-    # query = ("INSERT OR REPLACE INTO files (id, fileName) VALUES (%s, 'ABC')") %(id)
-    # sql(query)
-
-# download(10, "http://mp3tales.info/audio/prikljuchenija_buratino.mp3")
-# download("http://mp3tales.info/screen/pre/280x280xprikljuchenija_buratino.jpg.pagespeed.ic.ViQl-ABr1T.jpg")
-# download("http://download.linnrecords.com/test/m4a/tone24bit.aspx")
+        print "No URL found for tale #%s" %id

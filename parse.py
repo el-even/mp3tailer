@@ -25,17 +25,21 @@ def strip(text):
     result = typographer(" {4,}", "\n", result) # replace 4+ spaces with line break
     result = typographer(" {2,}", " ", result) # replace 2+ spaces with single space
 
+    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result) # remove obsolete spaces and line breaks
+
     result = typographer(" (\"|\')", u" \xab", result) # beautify quotes
     result = typographer("(\"|\') ", u"\xbb ", result) # don't like these similar lines
     
     result = typographer("(\"|\')\.", u"\xbb.", result)
+    result = typographer("\!(\"|\')", u"!\xbb", result) # I know it looks stupid :(
+    result = typographer("(\"|\')\,", u"\xbb,", result)
     result = typographer("\((\"|\')", u"(\xab", result)
     result = typographer("(\"|\')\)", u"\xbb)", result)
-    result = typographer("(\"|\')\n", u"\xbb\n", result)  # final quote in line
     result = typographer("\n(\"|\')", u"\n\xab", result)  # first quote in line
+    result = typographer("(\"|\')\n", u"\xbb\n", result)  # final quote in line
+    result = typographer("(\"|\')$", u"\xbb", result)  # final quote in line
     
-    result = typographer("\'", "''", result)
-    result = re.sub("^\s*|^\n*|\s*$|\n*$|\s*?<br/>", "", result) # remove obsolete spaces and line breaks
+    result = typographer("\'", "''", result)  # if nothing helped, just escape it by doubling
     return result
 
 
@@ -55,6 +59,8 @@ def parser(id, html):
         tale_name = (mp3_url.split('/')[-1]).split('.')[0]
         print ok_mark
 
+        # NOT SECURE!
+        # TODO: use ? istead of %s
         print "Updating database",
         query = ("INSERT OR REPLACE INTO files (id, taleName, mp3URL, coverURL)\
             VALUES ('%s', '%s', '%s', '%s')") %(id, tale_name, mp3_url, img_url)
@@ -71,3 +77,4 @@ def parser(id, html):
 
     else:
         print "-- Error 404: nothing here, skipping"
+        
