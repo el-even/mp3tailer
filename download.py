@@ -12,7 +12,7 @@ if not os.path.exists(downloads_path):
 
 def download(id):
     try:
-        # TODO: use single request to DB
+        # TODO: use single request to DB -- rewrite select(query) to return list
         mp3_url = select("SELECT mp3URL FROM files WHERE id=%s" %id)
         cover_url = select("SELECT coverURL FROM files WHERE id=%s" %id)
         tale_name = select("SELECT taleName FROM files WHERE id=%s" %id)
@@ -22,8 +22,9 @@ def download(id):
         remote_mp3 = urllib2.urlopen(mp3_url)
         meta = remote_mp3.info()
         file_size = int(meta.getheaders("Content-Length")[0])
+
         local_file = open(downloads_path+mp3_name, 'wb')
-        print "Downloading tale #%s: %s" %(id, mp3_name)
+        print "Downloading audio file for tale #%s: %s" %(id, mp3_name)
         file_size_dl = 0
         block_size = 8*1024
         while True:
@@ -46,18 +47,12 @@ def download(id):
             query = ("UPDATE status SET isDownloaded=0 WHERE id='%s'") %id
             sql(query)
 
-        local_file = open(downloads_path+cover_name, 'wb')
-        remote_cover = urllib2.urlopen(cover_url)
-        print "Downloading %s" % cover_name,
-        file_size_dl = 0
-        block_size = 8*1024
-        while True:
-            buffer = remote_cover.read(block_size)
-            if not buffer:
-                break
-            file_size_dl += len(buffer)
-            local_file.write(buffer)
+        print "Downloading cover art for tale #%s: %s" %(id, cover_name),
+        file_name = "%s%s" %(downloads_path, cover_name)
+        remote_cover = urllib2.urlopen(cover_url).read()
+        with open(file_name, 'wb') as local_cover:
+            local_cover.write(remote_cover)
         print ok_mark
-        local_file.close()
+
     except:
         print "No URL found for tale #%s" %id
