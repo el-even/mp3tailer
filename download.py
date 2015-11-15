@@ -67,4 +67,4 @@ def download(id):
         print  # add new line
         download_cover(cover_url, cover_name)
     except:
-        print "No URL found for tale #%s" %id\
+        print "No URL found for tale #%s" %id
