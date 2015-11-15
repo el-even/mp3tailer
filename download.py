@@ -1,5 +1,4 @@
 import os
-# import re
 import urllib2
 
 from config import *
@@ -10,7 +9,7 @@ if not os.path.exists(downloads_path):
     os.makedirs(downloads_path)
 
 
-def download_mp3(remote_mp3, local_mp3):
+def download_mp3(id, remote_mp3, local_mp3):
     try:
         print "Downloading %s" %(local_mp3),  # comma left for nok_mark to be printed on the very same line
         remote_file = urllib2.urlopen(remote_mp3)
@@ -35,9 +34,9 @@ def download_mp3(remote_mp3, local_mp3):
             query = ("UPDATE status SET isDownloaded=1 WHERE id='%s'") %id
             sql(query)
         else:
-            print "\nSomething went wrong, downloaded mp3 is corrupted"
             query = ("UPDATE status SET isDownloaded=0 WHERE id='%s'") %id
             sql(query)
+            print "\nSomething went wrong, downloaded mp3 is corrupted"
     except:
         print nok_mark
 
@@ -60,7 +59,7 @@ def download(id):
         tale_name, mp3_url, cover_url = data[0], data[1], data[2]
         mp3_name = "%s.%s" %(tale_name, mp3_url.split('.')[-1])
         cover_name = "%s.%s" %(tale_name, cover_url.split('.')[-1])
-        download_mp3(mp3_url, mp3_name)
+        download_mp3(id, mp3_url, mp3_name)
         print  # add new line
         download_cover(cover_url, cover_name)
     except:
