@@ -1,5 +1,5 @@
 import os
-import re
+# import re
 import urllib2
 
 from config import *
@@ -56,13 +56,10 @@ def download_cover(remote_cover, local_cover):
 
 def download(id):
     try:
-        # TODO: use single request to DB -- rewrite select(query) to return list
-        tale_name = select("SELECT taleName FROM files WHERE id=%s" %id)
-        mp3_url = select("SELECT mp3URL FROM files WHERE id=%s" %id)
-        cover_url = select("SELECT coverURL FROM files WHERE id=%s" %id)
+        data = select("SELECT taleName, mp3URL, coverURL FROM files WHERE id=%s" %id)
+        tale_name, mp3_url, cover_url = data[0], data[1], data[2]
         mp3_name = "%s.%s" %(tale_name, mp3_url.split('.')[-1])
         cover_name = "%s.%s" %(tale_name, cover_url.split('.')[-1])
-
         download_mp3(mp3_url, mp3_name)
         print  # add new line
         download_cover(cover_url, cover_name)

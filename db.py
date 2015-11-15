@@ -14,7 +14,7 @@ def sql(query):
 
 def select(query):
     cur.execute(query)
-    return cur.fetchone()[0]
+    return cur.fetchone()
 
 
 def db_init():
