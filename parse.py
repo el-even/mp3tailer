@@ -4,6 +4,7 @@ from config import *
 from db import *
 
 
+# wrapper for regexp search
 def retrieve(pattern, string):
     try:
         result = re.search(pattern, string).group(1)
@@ -12,12 +13,14 @@ def retrieve(pattern, string):
     return result
 
 
+# wrapper for regexp replace
 def typographer(pattern, substitute, string):
     string = string.decode("utf-8")
     result = re.sub(pattern, substitute, string).encode("utf-8")
     return result
 
 
+# remove obsolete chars or replace them with more typographically-friendly
 def strip(text):
     result = re.sub("<span.*?>.*?</span>", "", text) # remove surplus spans
     result = typographer("- ", u"\u2014 ", result) # replace hyphens with emdash
@@ -43,6 +46,7 @@ def strip(text):
     return result
 
 
+# mine data -- extract info from html
 def parser(id, html):
     print "Parsing tale #%s" %id,
     title = retrieve(re_title, html)
@@ -77,4 +81,3 @@ def parser(id, html):
 
     else:
         print "-- Error 404: nothing here, skipping"
-        

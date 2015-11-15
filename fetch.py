@@ -5,6 +5,7 @@ from config import *
 from parse import *
 
 
+# get html and prepare it for data extraction
 def fetcher(url):
     print "\nRetrieving %s" %url,
     remote_html = urllib2.urlopen(url).read()
@@ -16,6 +17,7 @@ def fetcher(url):
     return html
 
 
+# save html into file
 def htmlsave(id, html):
     # check if fetched files directory exists and create it
     if not os.path.exists(fetched_path):
@@ -24,6 +26,8 @@ def htmlsave(id, html):
     with open(filename, 'w') as htmlfile:
         htmlfile.write(html)
 
+
+# sniff through urls
 def populate(area):
     errors_counter = 0
     failed_tales = []
