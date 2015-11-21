@@ -9,20 +9,22 @@ if not os.path.exists(downloads_path):
     os.makedirs(downloads_path)
 
 
-def download_mp3(remote_mp3, local_mp3):
+def download_mp3(id):
     try:
-        print "Downloading %s" %(local_mp3),  # comma left for nok_mark to be printed on the very same line
-        remote_file = urllib2.urlopen(remote_mp3)
-        meta = remote_file.info()
-        file_size = int(meta.getheaders("Content-Length")[0])
+        print "Downloading tale #%s" %id,  # comma left for nok_mark to be printed on the very same line
+
+        data = select("SELECT audioRemote, audioLocal, audioLength FROM files WHERE id=%s" %id)
+        local_mp3 = downloads_path+data[1]
+        file_size = data[2]
+        remote_mp3 = urllib2.urlopen(data[0])
 
         is_downloaded = 0  # dropping download flag
-        with open(downloads_path+local_mp3, 'wb') as local_file:
+        with open(local_mp3, 'wb') as local_file:
             file_size_dl = 0
             block_size = 8*1024
             status = ""
             while True:
-                buffer = remote_file.read(block_size)
+                buffer = remote_mp3.read(block_size)
                 if not buffer:
                     break
                 file_size_dl += len(buffer)
@@ -31,41 +33,41 @@ def download_mp3(remote_mp3, local_mp3):
                 status = status + chr(8)*(len(status)+1)
                 print status,
 
-        if os.path.getsize("%s" %(downloads_path+local_mp3)) == file_size:
+        if os.path.getsize("%s" %local_mp3) == file_size:
             is_downloaded = 1
         else:
             print "\nSomething went wrong, downloaded mp3 is corrupted"
 
     except:
         print nok_mark
-    return is_downloaded
+    finally:
+        query = ("UPDATE status SET isAudioDownloaded=%s WHERE id='%s'") %(is_downloaded, id)
+        sql(query)
 
-def download_cover(remote_cover, local_cover):
+
+def download_cover(id):
     try:
-        print "Downloading %s" %(local_cover),
-        file_name = "%s%s" %(downloads_path, local_cover)
-        remote_cover = urllib2.urlopen(remote_cover).read()
-        with open(file_name, 'wb') as local_file:
+        is_downloaded = 0
+        print "Downloading cover #%s" %id,
+        data = select("SELECT coverRemote, coverLocal FROM files WHERE id=%s" %id)
+        local_cover = downloads_path+data[1]
+        remote_cover = urllib2.urlopen(data[0]).read()
+        with open(local_cover, 'wb') as local_file:
             local_file.write(remote_cover)
         print ok_mark
+        is_downloaded = 1
     except:
         print nok_mark
+    finally:
+        query = ("UPDATE status SET isCoverDownloaded=%s WHERE id='%s'") %(is_downloaded, id)
+        sql(query)
 
 
 def download(id):
     try:
-        data = select("SELECT taleName, mp3URL, coverURL FROM files WHERE id=%s" %id)
-        tale_name, mp3_url, cover_url = data[0], data[1], data[2]
-        mp3_name = "%s.%s" %(tale_name, mp3_url.split('.')[-1])
-        cover_name = "%s.%s" %(tale_name, cover_url.split('.')[-1])
-
         # TODO: not good for broken links, need to improve try-except
-        is_downloaded = download_mp3(mp3_url, mp3_name)
-        query = ("UPDATE status SET isDownloaded=%s WHERE id='%s'") %(is_downloaded, id)
-        sql(query)
+        download_mp3(id)
         print  # add new line
-        download_cover(cover_url, cover_name)
+        download_cover(id)
     except:
         print "No URL found for tale #%s" %id
-
-download(2)

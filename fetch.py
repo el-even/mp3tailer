@@ -35,7 +35,7 @@ def populate(area):
         url = "%s?id=%s" %(talesurl, id)
         try:
             html = fetcher(url)
-            htmlsave(id, html) # debug purpose only
+            # htmlsave(id, html) # debug purpose only
             parser(id, html)
         except:
             errors_counter += 1

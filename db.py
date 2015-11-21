@@ -20,8 +20,10 @@ def select(query):
 def db_init():
     sql("CREATE TABLE IF NOT EXISTS status (id INTEGER PRIMARY KEY, \
         isParsed BOOLEAN,\
-        isDownloaded BOOLEAN,\
+        isAudioDownloaded BOOLEAN,\
+        isCoverDownloaded BOOLEAN,\
         isTagged BOOLEAN)")
+        # TODO: remove isParsed?
 
     sql("CREATE TABLE IF NOT EXISTS tags (id INTEGER PRIMARY KEY,\
         title TEXT,\
@@ -29,6 +31,8 @@ def db_init():
         description TEXT)")
 
     sql("CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY,\
-        taleName TEXT,\
-        mp3URL TEXT,\
-        coverURL TEXT)")
+        audioRemote TEXT,\
+        audioLocal TEXT,\
+        audioLength INTEGER,\
+        coverRemote TEXT,\
+        coverLocal TEXT)")

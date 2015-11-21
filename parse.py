@@ -1,4 +1,5 @@
 import re
+import urllib2
 
 from config import *
 from db import *
@@ -58,16 +59,23 @@ def parser(id, html):
             %(strip(retrieve(re_annotation, html)),\
                 strip(retrieve(re_description, html)))
         description = strip(description)
-        img_url = rooturl + re.search(re_img_url, html).group(1)
+        cover_url = rooturl + re.search(re_cover_url, html).group(1)
         mp3_url = rooturl + re.search(re_mp3_url, html).group(1)
         tale_name = (mp3_url.split('/')[-1]).split('.')[0]
+
+        remote_file = urllib2.urlopen(mp3_url)
+        meta = remote_file.info()
+        mp3_length = int(meta.getheaders("Content-Length")[0])
+        cover_name = "%s.%s" %(tale_name, cover_url.split('.')[-1])
+        mp3_name = "%s.%s" %(tale_name, mp3_url.split('.')[-1])
+
         print ok_mark
 
         # NOT SECURE!
         # TODO: use ? istead of %s
         print "Updating database",
-        query = ("INSERT OR REPLACE INTO files (id, taleName, mp3URL, coverURL)\
-            VALUES ('%s', '%s', '%s', '%s')") %(id, tale_name, mp3_url, img_url)
+        query = ("INSERT OR REPLACE INTO files (id, audioRemote, audioLocal, audioLength, coverRemote, coverLocal)\
+            VALUES ('%s', '%s', '%s', '%s', '%s', '%s')") %(id, mp3_url, mp3_name, mp3_length, cover_url, cover_name)
         sql(query)
 
         query = ("INSERT OR REPLACE INTO tags (id, title, year, description)\

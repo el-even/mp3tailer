@@ -11,7 +11,7 @@ max_errors_allowed = 50
 ok_mark = "-- Done"
 nok_mark = "-- Failed"
 
-re_img_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
+re_cover_url = '(?s)<div class="row">.*?<img.*?src="/(.*?)"'
 re_mp3_url = '<a.*?href="/(.*?)".*?onclick="return clickaudio\(\)".*?>'
 re_title = '<h1.*?>(.*?)</h1>'
 re_year = "<meta itemprop='dateCreated' content='(.*?)'>"
