@@ -33,7 +33,7 @@ def download_mp3(id):
                 status = status + chr(8)*(len(status)+1)
                 print status,
 
-        if os.path.getsize("%s" %local_mp3) == file_size:
+        if os.path.getsize(local_mp3) == file_size:
             is_downloaded = 1
         else:
             print "\nSomething went wrong, downloaded mp3 is corrupted"
