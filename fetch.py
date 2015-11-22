@@ -10,7 +10,7 @@ def fetcher(url):
     print "\nRetrieving %s" %url,
     remote_html = urllib2.urlopen(url).read()
     print ok_mark
-    print "Decoding %s" %url,
+    print "Decoding",
     # reencode source html from cp1251 to utf8 for parsing sake
     html = remote_html.decode('cp1251').encode('utf8')
     print ok_mark
@@ -28,6 +28,7 @@ def htmlsave(id, html):
 
 
 # sniff through urls
+# TODO: align populate and download parameters
 def populate(area):
     errors_counter = 0
     failed_tales = []
