@@ -10,4 +10,4 @@ from podcast import *
 # db_init()
 # populate(xrange(first_tale,last_tale))
 # download(43)
-create_podcast()
+# create_podcast()

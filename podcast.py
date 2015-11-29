@@ -2,8 +2,8 @@ from config import *
 from db import *
 
 
+# TODO: Reduce SELECTs number
 def create_podcast():
-
     head = """<?xml version="1.0" encoding="UTF-8"?>
     <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
     \t<channel>

@@ -47,6 +47,14 @@ def strip(text):
     return result
 
 
+# get size of remote mp3 file to populate podcast field
+def get_length(url):
+    remote_file = urllib2.urlopen(url)
+    meta = remote_file.info()
+    length = int(meta.getheaders("Content-Length")[0])
+    return length
+
+
 # mine data -- extract info from html
 def parser(id, html):
     print "Parsing tale #%s" %id,
@@ -62,10 +70,7 @@ def parser(id, html):
         cover_url = rooturl + re.search(re_cover_url, html).group(1)
         mp3_url = rooturl + re.search(re_mp3_url, html).group(1)
         tale_name = (mp3_url.split('/')[-1]).split('.')[0]
-
-        remote_file = urllib2.urlopen(mp3_url)
-        meta = remote_file.info()
-        mp3_length = int(meta.getheaders("Content-Length")[0])
+        mp3_length = get_length(mp3_url)
         cover_name = "%s.%s" %(tale_name, cover_url.split('.')[-1])
         mp3_name = "%s.%s" %(tale_name, mp3_url.split('.')[-1])
 
