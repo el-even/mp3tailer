@@ -5,19 +5,19 @@ from db import *
 # TODO: Reduce SELECTs number
 def create_podcast():
     head = """<?xml version="1.0" encoding="UTF-8"?>
-    <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
-    \t<channel>
-    \t\t<title>Audio Tales</title>
-    \t\t<description>Good old audiotales in shiny new cover. Enjoy, my little friend :)</description>
-    \t\t<link>http://mp3tales.info</link>
-    \t\t<language>ru-ru</language>
-    \t\t<docs>http://blogs.law.harvard.edu/tech/rss</docs>
-    \t\t<itunes:author>Powered by mp3tales.info</itunes:author>
-    \t\t<itunes:image href="http://mp3tales.info/img/sky.png.pagespeed.ce.ppKAjK8Sec.png"/>
-    """
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+\t<channel>
+\t\t<title>Audio Tales</title>
+\t\t<description>Good old audiotales in shiny new cover. Enjoy, my little friend :)</description>
+\t\t<link>http://mp3tales.info</link>
+\t\t<language>ru-ru</language>
+\t\t<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+\t\t<itunes:author>Powered by mp3tales.info</itunes:author>
+\t\t<itunes:image href="http://mp3tales.info/img/sky.png.pagespeed.ce.ppKAjK8Sec.png"/>
+"""
 
     bottom = """\t</channel>
-    </rss>"""
+</rss>"""
 
     with open("../audiotales.xml", 'wb') as podcast_file:
         podcast_file.write(head)
@@ -46,7 +46,7 @@ def create_podcast():
                 podcast_file.write(enclosure)
                 podcast_file.write(image)
 
-                podcast_file.write("\t\t\t</item>\n")
+                podcast_file.write("\t\t</item>\n")
                 print ok_mark
             else:
                 print "-- No data found, skipping"
